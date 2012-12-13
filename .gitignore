@@ -43,3 +43,7 @@ htmlcov/
 include/
 lib/
 /bootstrap.py
+
+# For debian packaging
+debian/files
+debian/python-*
