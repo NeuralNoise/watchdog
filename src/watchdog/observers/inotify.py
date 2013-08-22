@@ -737,6 +737,10 @@ if platform.is_linux():
         if not any([event.is_moved_from or event.is_moved_to for event in
                     inotify_events]):
           self._inotify.clear_move_records()
+        complete_moved_events = set()
+        for event in inotify_events:
+          if event.is_moved_to:
+            complete_moved_events.add(self._inotify.source_for_move(event))
         for event in inotify_events:
           if event.is_moved_to:
           # TODO: Sometimes this line will bomb even when a previous
@@ -761,6 +765,14 @@ if platform.is_linux():
                   self.queue_event(sub_event)
             except KeyError:
               pass
+          elif event.is_moved_from:
+            if event.src_path in complete_moved_events:
+              # Event already handle because we have both events
+              # moved_to and moved_from
+              continue
+            klass = ACTION_EVENT_MAP[(event.is_directory,
+                                      EVENT_TYPE_MOVED)]
+            self.queue_event(klass(event.src_path, None))
           elif event.is_attrib:
             klass = ACTION_EVENT_MAP[(event.is_directory,
                                       EVENT_TYPE_MODIFIED)]
