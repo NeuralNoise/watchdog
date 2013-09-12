@@ -1,3 +1,9 @@
+python-watchdog (0.6.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Carlos Pérez-Aradros Herce <cperez@zentyal.com>  Thu, 12 Sep 2013 15:34:58 +0200
+
 python-watchdog (0.6.0) unstable; urgency=low
 
   * 0.6.0
